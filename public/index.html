@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Cricket Scores</title>
+    <style>
+        .match-card { border: 1px solid #ccc; padding: 10px; margin: 10px; max-width: 400px; }
+        .team { font-weight: bold; }
+        body { font-family: Arial, sans-serif; }
+    </style>
+</head>
+<body>
+    <h1>Live Cricket Scores</h1>
+    <div id="scores"></div>
+    <script>
+        async function fetchScores() {
+            try {
+                const response = await fetch('/api');
+                const data = await response.json();
+                const container = document.getElementById('scores');
+                container.innerHTML = '';
+
+                if (data.error) {
+                    container.innerHTML = `<p>${data.error}</p>`;
+                } else if (data.matches && data.matches.length > 0) {
+                    data.matches.forEach(match => {
+                        container.innerHTML += `
+                            <div class="match-card">
+                                <div class="team">${match.teams[0] || 'Team 1'}: ${match.scores[0] || 'Yet to bat'}</div>
+                                <div class="team">${match.teams[1] || 'Team 2'}: ${match.scores[1] || 'Yet to bat'}</div>
+                                <div>Status: ${match.status || 'N/A'}</div>
+                                <div>Overs: ${match.overs || 'N/A'}</div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    container.innerHTML = '<p>No live matches available</p>';
+                }
+            } catch (error) {
+                document.getElementById('scores').innerHTML = 'Error loading scores';
+            }
+        }
+
+        fetchScores();
+        setInterval(fetchScores, 30000);
+    </script>
+</body>
+</html>
