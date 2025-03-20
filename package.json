@@ -1,0 +1,12 @@
+{
+  "name": "cricket-scraper",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "vercel"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "cheerio": "^1.0.0-rc.12",
+    "node-cache": "^5.1.2"
+  }
+}
